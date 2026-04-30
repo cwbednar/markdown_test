@@ -1,6 +1,4 @@
-import re 
 from enum import Enum
-
 from htmlnode import LeafNode, ParentNode
 
 class TextType(Enum):
@@ -42,31 +40,3 @@ def text_node_to_html_node(text_node):
             case TextType.IMAGE:
                 return LeafNode("img", text_node.text, {"src": f"{text_node.url}", "alt": f"{text_node.text}"})
 
-def split_nodes_delimiter(old_nodes, delimiter, text_type):
-    result = []
-    for node in old_nodes:
-        if node.text_type != TextType.TEXT:
-            result.append(node)
-        else:
-            parts = node.text.split(delimiter)
-            if len(parts) % 2 != 0:
-                raise Exception("Invalid number of identifiers")
-            else:
-                for i, part in enumerate(parts):
-                    if part == "":
-                        continue
-                    if i % 2 == 0:
-                        new_node = TextNode(part, TextType.TEXT)
-                        result.append(new_node)
-                    else:
-                        new_node = TextNode(part, text_type)
-                        result.append(new_node)
-    return result
-
-def extract_markdown_images(text):
-    matches = re.findall(r"!\[([^\[\]]*)\]\(([^\(\)]*)\)", text)
-    return matches 
-
-def extract_markdown_links(text):
-    matches = re.findall(r"(?<!!)\[([^\[\]]*)\]\(([^\(\)]*)\)", text)
-    return matches

@@ -1,9 +1,11 @@
-from textnode import TextNode, TextType 
+from textnode import TextNode, TextType
+from copystatic import delete_and_replace
+from markdown_blocks import generate_page, generate_pages_recursive
+
 
 def main():
-    print("hello world")
-    dummy = TextNode("Some shit here", TextType.LINK, "https://www.boot.dev")
-    print(dummy)
+    delete_and_replace("static", "public")
+    generate_pages_recursive("content/", "template.html", "public/")
 
 
 if __name__ == '__main__':
